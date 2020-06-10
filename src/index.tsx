@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { ThemeProvider, CSSReset, theme } from "@chakra-ui/core";
 // @ts-ignore
 import Application, { getDemoFiles } from '@webcodesk/react-app-framework-demo';
 import './index.css';
@@ -9,14 +10,23 @@ const schema: any = require('./app/schema').default;
 const userComponents: any = require('./app/indices/userComponents').default;
 const userFunctions: any = require('./app/indices/userFunctions').default;
 
+
+// Let's say you want to add custom colors
+const customTheme = {
+    ...theme,
+};
+
 function render() {
     getDemoFiles({ schema }).then(({ schema }: { schema: any }) => {
         ReactDOM.render(
+            <ThemeProvider theme={customTheme}>
+                <CSSReset />
                 <Application
                     schema={schema}
                     userComponents={userComponents}
                     userFunctions={userFunctions}
-                />,
+                />
+            </ThemeProvider>,
             document.getElementById('root')
         );
     });
@@ -25,13 +35,16 @@ function render() {
 if (process.env.NODE_ENV !== 'production') {
     const packageJson = require('../package.json');
     ReactDOM.render(
+        <ThemeProvider theme={customTheme}>
+            <CSSReset />
             <Application
                 name={packageJson.name}
                 version={packageJson.version}
                 schema={schema}
                 userComponents={userComponents}
                 userFunctions={userFunctions}
-            />,
+            />
+        </ThemeProvider>,
         document.getElementById('root')
     );
 } else {
